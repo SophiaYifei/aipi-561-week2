@@ -13,7 +13,7 @@ from functools import lru_cache
 
 _ROOT = Path(__file__).parent.parent.parent
 DATA_PATH = _ROOT / "data" / "processed" / "demand_enriched.parquet"
-LOOKUP_PATH = _ROOT / "metadata" / "Lookups" / "taxi_zone_lookup.csv"
+LOOKUP_PATH = _ROOT / "metadata" / "Lookups" / "taxi_zone_lookup_real.csv"
 MODEL_PATH = _ROOT / "data" / "processed" / "lgbm_demand_model.txt"
 
 # Fixed reference point: end of 2nd week in Feb 2026 (the latest complete month)
