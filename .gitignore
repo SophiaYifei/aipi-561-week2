@@ -25,3 +25,13 @@ Thumbs.db
 *.log
 key.json
 key.json
+
+# Large data files (do NOT commit)
+week*/data/*.parquet
+*.parquet
+
+# Local-only scaffolding: symlinks that point data.py at the real Week 2 files
+week2/data/processed/
+
+# Report is submitted separately as a PDF, not tracked here
+week3/REPORT.md
