@@ -1,0 +1,36 @@
+name: Data Quality Check
+
+# Frequency is anchored to how the data arrives (one batch per day), not to API
+# traffic. A daily run is enough to catch a bad batch before the next one lands;
+# the push trigger gives fast feedback whenever the validator or its inputs change.
+on:
+  schedule:
+    - cron: '0 0 * * *'  # daily at 00:00 UTC
+  push:
+    branches: [main]
+    paths:
+      - 'week3/validation/**'
+      - 'week3/backend/data.py'
+      - '.github/workflows/validate-data.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # The real parquet is gitignored (74 MB) and never reaches CI, so the
+      # suite runs entirely on synthetic data. That tests the validation logic,
+      # which is the part that can regress in a pull request. Validating the
+      # actual incoming batch is a separate path that runs in the API at startup.
+      - name: Install dependencies
+        run: pip install pandas numpy pyarrow pytest
+
+      - name: Run data quality tests
+        run: python -m pytest week3/validation/test_data_quality.py -v
